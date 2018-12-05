@@ -72,22 +72,10 @@ public func configure(
     // 6
     services.register(databases)
     
-//    // Configure a database
-//    var databases = DatabasesConfig()
-//    // 3
-//    let databaseConfig = PostgreSQLDatabaseConfig(
-//        hostname: "localhost",
-//        username: "vapor",
-//        database: "vapor",
-//        password: "password")
-//    let database = PostgreSQLDatabase(config: databaseConfig)
-//    databases.add(database: database, as: .psql)
-//    services.register(databases)
-//
-//    var migrations = MigrationConfig()
-//    // 4
-//    migrations.add(model: Acronym.self, database: .psql)
-//    services.register(migrations)
+    var migrations = MigrationConfig()
+    // 4
+    migrations.add(model: Acronym.self, database: .psql)
+    services.register(migrations)
 }
 
 
