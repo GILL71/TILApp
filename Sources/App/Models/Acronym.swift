@@ -1,17 +1,17 @@
-import Vapor
-import FluentSQLite
-
-final class Acronym: Codable {
-    var id: Int?
-    var short: String
-    var long: String
-    
-    init(short: String, long: String) {
-        self.short = short
-        self.long = long
-    }
-}
-
+//import Vapor
+//import FluentSQLite
+//
+//final class Acronym: Codable {
+//    var id: Int?
+//    var short: String
+//    var long: String
+//
+//    init(short: String, long: String) {
+//        self.short = short
+//        self.long = long
+//    }
+//}
+//
 //extension Acronym: Model {
 //    // 1
 //    typealias Database = SQLiteDatabase
@@ -21,8 +21,26 @@ final class Acronym: Codable {
 //    public static var idKey: IDKey = \Acronym.id
 //}
 
-extension Acronym: SQLiteModel {} //contains in protocol id: Int property
+//extension Acronym: SQLiteModel {} //contains in protocol id: Int property
+//
+//extension Acronym: Migration {}
+//
+//extension Acronym: Content {}
 
+import Vapor
+import FluentPostgreSQL
+
+final class Acronym: Codable {
+    var id: Int?
+    var short: String
+    var long: String
+
+    init(short: String, long: String) {
+        self.short = short
+        self.long = long
+    }
+}
+
+extension Acronym: PostgreSQLModel {}
 extension Acronym: Migration {}
-
 extension Acronym: Content {}
