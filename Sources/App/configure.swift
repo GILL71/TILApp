@@ -128,5 +128,10 @@ public func configure(
     var migrations = MigrationConfig()
     // 4
     migrations.add(model: Acronym.self, database: .psql)
+    migrations.add(model: User.self, database: .psql)
     services.register(migrations)
+    
+    let websockets = NIOWebSocketServer.default()
+    sockets(websockets)
+    services.register(websockets, as: WebSocketServer.self)
 }
