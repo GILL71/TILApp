@@ -42,11 +42,11 @@ func wordKey(with request: Request) -> Future<String> {
 extension Array {
     fileprivate func random() -> Element {
         let idx: Int
-        #if os(Linux)
-        idx = Int(random() % count)
-        #else
+     //   #if os(Linux)
+//        idx = Int(random() % count)
+    //    #else
         idx = Int(arc4random_uniform(UInt32(count)))
-        #endif
+     //   #endif
         
         return self[idx - 1]
     }
