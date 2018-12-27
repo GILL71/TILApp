@@ -31,23 +31,24 @@ import Foundation
 
 func wordKey(with request: Request) -> Future<String> {
     var key = ""
-    key += words.random()
+    key += words.randomElement()!//words.random()
     key += "."
-    key += words.random()
+    key += words.randomElement()!//words.random()
     key += "."
-    key += words.random()
+    key += words.randomElement()!//words.random()
     return Future.map(on: request) { key }
 }
 
 extension Array {
     fileprivate func random() -> Element {
         let idx: Int
-     //   #if os(Linux)
-//        idx = Int(random() % count)
-    //    #else
+        #if os(Linux)
+        //idx = Int(random() % count)
+        idx = randomElement()
+        #else
         idx = Int(arc4random_uniform(UInt32(count)))
-     //   #endif
-        
+        #endif
+
         return self[idx - 1]
     }
 }
