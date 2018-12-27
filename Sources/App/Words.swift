@@ -41,7 +41,7 @@ func wordKey(with request: Request) -> Future<String> {
 
 //extension Array {
 //    fileprivate func random() -> Element {
-//        let idx: Int
+//        let idx: Intп
 //        #if os(Linux)
 //        //idx = Int(random() % count)
 //        idx = randomElement()

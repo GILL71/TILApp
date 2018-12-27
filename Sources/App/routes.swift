@@ -10,6 +10,10 @@ public func routes(_ router: Router) throws {
         return "Hello, world!"
     }
     
+    router.get("zdarova") { req in
+        return "Здарова, Димон, это привет тебе от кента с 5ого этажа!"
+    }
+    
 //    router.post("api", "acronyms") { req -> Future<Acronym> in
 //        return try req.content.decode(Acronym.self)
 //            .flatMap(to: Acronym.self) { acronym in
