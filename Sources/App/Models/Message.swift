@@ -6,9 +6,9 @@ import FluentPostgreSQL
 final class Message: Codable {
     var id: Int?
     var content: String
-    var user_id: Int
+    var user_id: String
     
-    init(content: String, user_id: Int) {
+    init(content: String, user_id: String) {
         self.content = content
         self.user_id = user_id
     }

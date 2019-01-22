@@ -25,42 +25,49 @@ public func routes(_ router: Router) throws {
 //        return Acronym.query(on: req).all()
 //    }
     
-    router.get("api", "acronyms", Acronym.parameter) {
-        req -> Future<Acronym> in
-        return try req.parameters.next(Acronym.self)
-    }
+//    router.get("api", "users") { req -> Future<[User]> in
+//        return User.query(on: req).all()
+//    }
+//
+//    router.post("api", "users") { req -> Future<User> in
+//        return try req.content.decode(User.self)
+//            .flatMap(to: User.self) { user in
+//            return user.save(on: req)
+//        }
+//    }
     
-    router.put("api", "acronyms", Acronym.parameter) { req -> Future<Acronym> in
-        return try flatMap(to: Acronym.self, req.parameters.next(Acronym.self), req.content.decode(Acronym.self)) {
-            acronym, updatedAcronym in
-            acronym.short = updatedAcronym.short
-            acronym.long = updatedAcronym.long
-            return acronym.save(on: req)
-        }
-    }
+//    router.get("api", "acronyms", Acronym.parameter) {
+//        req -> Future<Acronym> in
+//        return try req.parameters.next(Acronym.self)
+//    }
+    
+//    router.put("api", "acronyms", Acronym.parameter) { req -> Future<Acronym> in
+//        return try flatMap(to: Acronym.self, req.parameters.next(Acronym.self), req.content.decode(Acronym.self)) {
+//            acronym, updatedAcronym in
+//            acronym.short = updatedAcronym.short
+//            acronym.long = updatedAcronym.long
+//            return acronym.save(on: req)
+//        }
+//    }
 
-    router.delete("api", "acronyms", Acronym.parameter) {
-        req -> Future<HTTPStatus> in
-        return try req.parameters.next(Acronym.self)
-            .delete(on: req)
-            .transform(to: HTTPStatus.noContent)
-    }
+//    router.delete("api", "acronyms", Acronym.parameter) {
+//        req -> Future<HTTPStatus> in
+//        return try req.parameters.next(Acronym.self)
+//            .delete(on: req)
+//            .transform(to: HTTPStatus.noContent)
+//    }
     
-    router.get("api", "acronyms", "search") {
-        req -> Future<[Acronym]> in
-        // 2
-        guard let searchTerm = req.query[String.self, at: "term"] else {
-            throw Abort(.badRequest)
-        }
-        // 3
-        return Acronym.query(on: req)
-            .filter(\.short == searchTerm)
-            .all()
-    }
-    
-    let acronymsController = AcronymsController()
-
-    try router.register(collection: acronymsController)
+//    router.get("api", "acronyms", "search") {
+//        req -> Future<[Acronym]> in
+//        // 2
+//        guard let searchTerm = req.query[String.self, at: "term"] else {
+//            throw Abort(.badRequest)
+//        }
+//        // 3
+//        return Acronym.query(on: req)
+//            .filter(\.short == searchTerm)
+//            .all()
+//    }
     
     router.post("api", "create", use: sessionManager.createTrackingSession)
     
@@ -77,16 +84,17 @@ public func routes(_ router: Router) throws {
     
     router.post("api", "update", TrackingSession.parameter) {
         req -> Future<HTTPStatus> in
-        // 2
         let session = try req.parameters.next(TrackingSession.self)
-        // 3
         return try Message.decode(from: req)
             .map(to: HTTPStatus.self) { message in
-                // 4
-//                message.content = "catched message!"
                 sessionManager.update(message, for: session)
                 return .ok
         }
     }
+    
+    let acronymsController = AcronymsController()
+    try router.register(collection: acronymsController)
+    
+    let usersController = UsersController()
+    try router.register(collection: usersController)
 }
-//wood.frog.deer

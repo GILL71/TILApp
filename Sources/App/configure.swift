@@ -34,6 +34,7 @@
 
 import FluentPostgreSQL
 import Vapor
+import Authentication
 
 //last mine
 //public func configure(
@@ -125,10 +126,17 @@ public func configure(
     // 6
     services.register(databases)
     
+    //?
+    
+    try services.register(AuthenticationProvider())
+    //?
+    
     var migrations = MigrationConfig()
     // 4
-    migrations.add(model: Acronym.self, database: .psql)
     migrations.add(model: User.self, database: .psql)
+    migrations.add(model: Acronym.self, database: .psql)
+    migrations.add(model: Token.self, database: .psql)
+    migrations.add(migration: AdminUser.self, database: .psql)
     services.register(migrations)
     
     let websockets = NIOWebSocketServer.default()
