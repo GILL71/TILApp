@@ -3,6 +3,11 @@ import PackageDescription
 
 let package = Package(
     name: "TILApp",
+    products: [
+        .library(
+            name: "TILApp",
+            targets: ["App"]),
+        ],
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git",
                  from: "3.0.0"),
@@ -15,13 +20,15 @@ let package = Package(
         
         .package(url: "https://github.com/vapor/leaf.git", from: "3.0.0-rc"),
         
-        .package(url: "https://github.com/vapor/auth.git", from: "2.0.0-rc")
+        .package(url: "https://github.com/vapor/auth.git", from: "2.0.0-rc"),
+        
+        .package(url: "https://github.com/IBM-Swift/Swift-SMTP", .upToNextMinor(from: "5.1.0")),    // add the dependency
         
                     ],
     targets: [
         // 2
         .target(name: "App", dependencies: ["FluentPostgreSQL", "Vapor", "WebSocket", "Leaf",
-                                            "Authentication"]),
+                                            "Authentication", "SwiftSMTP"]),
         .target(name: "Run", dependencies: ["App"]),
         .testTarget(name: "AppTests", dependencies: ["App"]),
     ]

@@ -33,11 +33,21 @@ struct UsersController: RouteCollection {
 //        return token.save(on: req)
 //    }
     
+    //неправильный вариант, но рабочий - надо добавить шифрование пароля
+    //        return try req.content.decode(User.self).save(on: req).flatMap(to: Token.self) { user in
+    //            let token = try Token.generate(for: user)
+    //            return token.save(on: req)
+    //        }
+    
     func createHandler(_ req: Request) throws -> Future<Token> {
-        return try req.content.decode(User.self).save(on: req).flatMap(to: Token.self) { user in
-            let token = try Token.generate(for: user)
-            return token.save(on: req)
-        }
+        return try req.content.decode(User.self).flatMap({ (user) -> EventLoopFuture<Token> in
+//            var userToSave = user
+            user.password = try BCrypt.hash(user.password)
+            return user.save(on: req).flatMap(to: Token.self) { user in
+                let token = try Token.generate(for: user)
+                return token.save(on: req)
+            }
+        })
     }
     
     //admin user version
