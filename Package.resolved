@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/vapor/http.git",
         "state": {
           "branch": null,
-          "revision": "6973bf50dab8dd00e4daf8cb82ca72b33f5db016",
-          "version": "3.1.6"
+          "revision": "4c8c655932fdb409c11549eadabf27d3d61bc24c",
+          "version": "3.1.7"
         }
       },
       {
@@ -123,8 +123,8 @@
         "repositoryURL": "https://github.com/vapor/multipart.git",
         "state": {
           "branch": null,
-          "revision": "e57007c23a52b68e44ebdfc70cbe882a7c4f1ec3",
-          "version": "3.0.2"
+          "revision": "bd7736c5f28e48ed8b683dcc9df3dcd346064c2b",
+          "version": "3.0.3"
         }
       },
       {
@@ -168,8 +168,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "a20e129c22ad00a51c902dca54a5456f90664780",
-          "version": "1.12.0"
+          "revision": "03c541a24dd0558c942b15d8464eb75d70a921c4",
+          "version": "1.12.1"
         }
       },
       {
