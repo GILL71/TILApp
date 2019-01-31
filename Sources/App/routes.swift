@@ -70,34 +70,45 @@ public func routes(_ router: Router) throws {
 //            .all()
 //    }
     
-    router.post("api", "sendMail") { (req) -> HTTPStatus in
-
-        let smtp = SMTP(hostname: "smtp.gmail.com",
-                        email: "gm360s@gmail.com",
-                        password: "ENTER YOUR PASSWORD!!!",
-                        port: 587,
-                        tlsMode: .requireSTARTTLS,
-                        tlsConfiguration: nil,
-                        authMethods: [],
-                        domainName: "localhost",
-                        timeout: 10)
+    router.post("api", "sendMail") { (req) -> Future<HTTPStatus> in
         
-        let commail = Mail.User(name: "Michael Nechaev", email: "gm360s@gmail.com")
-        let rumail = Mail.User(name: "Mikhail Nechaev", email: "gm360@mail.ru")
-        
-        let mail = Mail(
-            from: commail,
-            to: [rumail],
-            subject: "Humans and robots living together in harmony and equality.",
-            text: "That was my ultimate wish."
-        )
-        
-        smtp.send(mail) { (error) in
-            if let error = error {
-                print(error)
+        return try req.content.decode(TicketPass.self).map(to: HTTPStatus.self, { (pass) -> HTTPStatus in
+            
+            guard let email = ProcessInfo.processInfo.environment["tsmp_email_var"] else {
+                return HTTPStatus.conflict
             }
-        }
-        return .ok
+            guard let password = ProcessInfo.processInfo.environment["tsmp_pass_var"] else {
+                return HTTPStatus.conflict
+            }
+            
+            let smtp = SMTP(hostname: "smtp.gmail.com",
+                            email: email,
+                            password: password,
+                            port: 587,
+                            tlsMode: .requireSTARTTLS,
+                            tlsConfiguration: nil,
+                            authMethods: [],
+                            domainName: "localhost",
+                            timeout: 10)
+            
+            let commail = Mail.User(name: "Michael Nechaev", email: "gm360s@gmail.com")
+            let rumail = Mail.User(name: pass.name, email: pass.recipientEmail ?? "No name")
+            
+            let mail = Mail(
+                from: commail,
+                to: [rumail],
+                subject: pass.header ?? "-",
+                text: pass.text ?? "No body"
+            )
+            
+            smtp.send(mail) { (error) in
+                if let error = error {
+                    print(error)
+                }
+            }
+            return .ok
+        })
+        
     }
     
     router.post("api", "create", use: sessionManager.createTrackingSession)

@@ -7,39 +7,22 @@ import FluentPostgreSQL
 //
 
 final class TicketPass: Codable {
-    var id: Int?
-    var short: String
-    var long: String
-    var userID: User.ID?
+    var recipientEmail: String?
+    var header: String?
+    var text: String?
+    var name: String?
     
-    init(short: String, long: String, userID: User.ID?) {
-        self.short = short
-        self.long = long
-        self.userID = userID
+    init(recipientEmail: String, header: String?, text: String, name: String?) {
+        self.recipientEmail = recipientEmail
+        self.header = header
+        self.text = text
+        self.name = name
     }
 }
 
 //docker run --name postgres -e POSTGRES_DB=vapor \
 //-e POSTGRES_USER=vapor -e POSTGRES_PASSWORD=password \
 //-p 5432:5432 -d postgres
-extension TicketPass: PostgreSQLModel {}
 extension TicketPass: Content {}
-extension TicketPass: Parameter {}
 
-extension TicketPass {
-    // 1
-    var user: Parent<TicketPass, User>? {
-        // 2
-        return parent(\.userID)
-    }
-}
-
-extension TicketPass: Migration {
-    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.create(self, on: connection) { builder in
-            try addProperties(to: builder)
-            builder.reference(from: \.userID, to: \User.id)
-        }
-    }
-}
 
